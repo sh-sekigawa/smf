@@ -130,6 +130,13 @@ func RetrieveUPFNodeByNodeID(nodeID pfcpType.NodeID) (upf *UPF) {
 			upf = value.(*UPF)
 			return false
 		} else {
+			if value.(*UPF).NodeID.NodeIdType == pfcpType.NodeIdTypeFqdn {
+				ipaddr := value.(*UPF).NodeID.ResolveNodeIdToIp().String()
+				if ipaddr == nodeID.ResolveNodeIdToIp().String() {
+					upf = value.(*UPF)
+					return false
+				}
+			}
 			return true
 		}
 	})
